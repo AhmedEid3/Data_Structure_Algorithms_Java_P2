@@ -1,5 +1,7 @@
 package ds;
 
+import java.util.ArrayList;
+
 public class BinarySearchTree<T> extends BaseTree<T> implements ITree<T> {
     private class NodeAndParent extends Node {
         Node parent;
@@ -52,33 +54,26 @@ public class BinarySearchTree<T> extends BaseTree<T> implements ITree<T> {
 
     }
 
+    public void balance() {
+        ArrayList<T> nodes = toSortedArray();
+        root = recursiveBalance(0, nodes.size() - 1, nodes);
+    }
+
+    private Node recursiveBalance(int start, int end, ArrayList<T> nodes) {
+        if (start > end) return null;
+
+        int mid = (start + end) / 2;
+        var newNode = new Node<T>((T) nodes.get(mid));
+        newNode.left = recursiveBalance(start, mid - 1, nodes);
+        newNode.right = recursiveBalance(mid + 1, end, nodes);
+
+        return newNode;
+    }
+
 
     public boolean contains(T item) {
         return findNode((int) item) != null ? true : false;
     }
-
-    private NodeAndParent findNode(int item) {
-        var currentNode = root;
-        Node parent = null;
-        boolean isLeft = false;
-
-        while (currentNode != null) {
-            if ((int) currentNode.value == item) return new NodeAndParent(currentNode, isLeft, parent);
-
-            parent = currentNode;
-
-            if ((int) currentNode.value > item) {
-                currentNode = currentNode.left;
-                isLeft = true;
-            } else if ((int) currentNode.value < item) {
-                currentNode = currentNode.right;
-                isLeft = false;
-            }
-        }
-
-        return null;
-    }
-
 
     public void remove(T item) {
         var node = findNode((int) item);
@@ -127,7 +122,6 @@ public class BinarySearchTree<T> extends BaseTree<T> implements ITree<T> {
         node.left = node.right = null;
     }
 
-
     public int min() {
         return min(root);
     }
@@ -164,12 +158,48 @@ public class BinarySearchTree<T> extends BaseTree<T> implements ITree<T> {
         return node.left != null ^ node.right != null;
     }
 
+    private NodeAndParent findNode(int item) {
+        var currentNode = root;
+        Node parent = null;
+        boolean isLeft = false;
+
+        while (currentNode != null) {
+            if ((int) currentNode.value == item) return new NodeAndParent(currentNode, isLeft, parent);
+
+            parent = currentNode;
+
+            if ((int) currentNode.value > item) {
+                currentNode = currentNode.left;
+                isLeft = true;
+            } else if ((int) currentNode.value < item) {
+                currentNode = currentNode.right;
+                isLeft = false;
+            }
+        }
+
+        return null;
+    }
+
     private NodeAndParent smallest(Node node, Node parent, boolean isLeft) {
         if (node == null) return null;
 
         if (node.left == null) return new NodeAndParent(node, isLeft, parent);
 
         return smallest(node.left, node, true);
+    }
+
+    private ArrayList<T> toSortedArray() {
+        ArrayList<T> nodes = new ArrayList<>();
+        toSortedArray(root, nodes);
+        return nodes;
+    }
+
+    private void toSortedArray(Node node, ArrayList<T> nodes) {
+        if (node == null) return;
+
+        toSortedArray(node.left, nodes);
+        nodes.add((T) node.value);
+        toSortedArray(node.right, nodes);
     }
 
 }

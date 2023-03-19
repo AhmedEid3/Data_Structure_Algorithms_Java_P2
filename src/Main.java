@@ -33,10 +33,11 @@ public class Main {
 //
         System.out.println(tree.height());
         System.out.println(tree.nodesAtKDistance(2));
-        tree.remove(6);
-        tree.traverseBreadthFirst();
+//        tree.remove(6);
+//        tree.traverseBreadthFirst();
 
-
+        tree.balance();
+        System.out.println(tree);
 
     }
 }
