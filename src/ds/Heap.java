@@ -97,12 +97,12 @@ public class Heap {
     }
 
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 0;
     }
 
 
-    private boolean isFull() {
+    public boolean isFull() {
         return size == items.length;
     }
 
