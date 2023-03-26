@@ -1,27 +1,22 @@
-import ds.*;
+import ds.Graph;
 
 public class Main {
     public static void main(String[] args) {
-     var trie = new Trie();
 
-     trie.insert("boy");
-     trie.insert("boyin");
-     trie.insert("boyins");
-     trie.insert("boyiter");
+        var graph1 = new Graph();
 
-//        System.out.println("Done");
+        graph1.addNode("A");
+        graph1.addNode("B");
+        graph1.addNode("C");
+        graph1.addNode("D");
 
+        graph1.addEdge("A", "B");
+        graph1.addEdge("B", "D");
+        graph1.addEdge("D", "C");
+        graph1.addEdge("A", "C");
 
-//        trie.traverse();
+        graph1.print();
 
-        trie.remove(null);
-
-
-        System.out.println(trie.contains("boy"));
-        System.out.println(trie.contains("boyin"));
-
-        System.out.println(trie.findWords(null));
+        graph1.traverseDepth("GG");
     }
-
-
 }
